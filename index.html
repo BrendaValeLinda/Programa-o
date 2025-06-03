@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Contador para o Dia dos Namorados</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f43b47, #453a94);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    font-family: 'Poppins', sans-serif;
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+  }
+
+  .container {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 40px 60px 60px;
+    border-radius: 20px;
+    box-shadow: 0 8px 24px rgba(255, 255, 255, 0.15);
+    max-width: 480px;
+    width: 100%;
+  }
+
+  h1 {
+    font-size: 2.8rem;
+    margin-bottom: 10px;
+    letter-spacing: 1.1px;
+    text-shadow: 0 2px 10px rgba(255, 255, 255, 0.5);
+  }
+
+  p.subtitle {
+    font-size: 1.3rem;
+    margin-bottom: 30px;
+    font-weight: 500;
+  }
+
+  .countdown {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+  }
+
+  .countdown div {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 20px 10px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transition: background 0.3s ease;
+  }
+
+  .countdown div:hover {
+    background: rgba(255, 255, 255, 0.35);
+  }
+
+  .countdown div span.number {
+    font-size: 3.5rem;
+    font-weight: 700;
+    display: block;
+    line-height: 1;
+    margin-bottom: 8px;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  }
+
+  .countdown div span.label {
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+  }
+
+  .message {
+    margin-top: 40px;
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: #ffe0e0;
+    text-shadow: 0 2px 10px #f44336;
+  }
+
+  button#toggle-ideas {
+    margin-top: 30px;
+    background: #ff5f7e;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    padding: 14px 30px;
+    font-size: 1.25rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 6px 12px rgba(255,95,126,0.6);
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  button#toggle-ideas:hover {
+    background: #ff3a5a;
+    box-shadow: 0 8px 16px rgba(255,58,90,0.85);
+  }
+
+  .ideas-section {
+    margin-top: 40px;
+    display: none;
+    text-align: left;
+  }
+
+  .ideas-section h2 {
+    color: #ffdde1;
+    margin-bottom: 15px;
+    text-align: center;
+    font-weight: 700;
+    text-shadow: 0 1px 6px #ff6680;
+  }
+
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(120px,1fr));
+    gap: 15px;
+    margin-bottom: 30px;
+  }
+
+  .gallery img {
+    width: 100%;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(255, 95, 126, 0.6);
+    object-fit: cover;
+    aspect-ratio: 4 / 3;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+  }
+
+  .gallery img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(255, 95, 126, 0.9);
+  }
+
+  .gift-ideas ul {
+    list-style: none;
+    padding: 0;
+    font-size: 1.1rem;
+    line-height: 1.5;
+  }
+
+  .gift-ideas ul li {
+    padding-left: 1.2em;
+    position: relative;
+    margin-bottom: 12px;
+  }
+
+  .gift-ideas ul li::before {
+    content: "🎁";
+    position: absolute;
+    left: 0;
+  }
+
+  @media (max-width: 560px) {
+    .container {
+      padding: 30px 30px 50px;
+    }
+    .countdown div span.number {
+      font-size: 2.6rem;
+    }
+    button#toggle-ideas {
+      width: 100%;
+      font-size: 1.1rem;
+      padding: 12px 0;
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1>Contador para o Dia dos Namorados ❤️</h1>
+    <p class="subtitle">Tempo restante para celebrar o amor!</p>
+    <div class="countdown" role="timer" aria-live="polite" aria-atomic="true">
+      <div>
+        <span class="number" id="days">0</span>
+        <span class="label">Dias</span>
+      </div>
+      <div>
+        <span class="number" id="hours">00</span>
+        <span class="label">Horas</span>
+      </div>
+      <div>
+        <span class="number" id="minutes">00</span>
+        <span class="label">Minutos</span>
+      </div>
+      <div>
+        <span class="number" id="seconds">00</span>
+        <span class="label">Segundos</span>
+      </div>
+    </div>
+    <p class="message" id="message"></p>
+
+    <button id="toggle-ideas">Mostrar Ideias para o Dia dos Namorados</button>
+
+    <section class="ideas-section" id="ideas-section" aria-hidden="true">
+      <h2>Fotos Românticas</h2>
+      <div class="gallery" aria-label="Galeria de fotos românticas">
+        <img src="https://media.istockphoto.com/id/636379014/pt/foto/m%C3%A3os-formando-um-formato-de-cora%C3%A7%C3%A3o-com-silhueta-de-p%C3%B4r-do-sol.jpg?s=612x612&w=0&k=20&c=2zPtmBmHzUIrtXRVVkLNDcQM4rx-SpbmPjVKe-lL_Gg=" alt="Mãos formando um coração ao pôr do sol" loading="lazy" />
+        <img src="https://blog.buson.com.br/wp-content/uploads/2024/12/viagens-romanticas-baratas-sao-paulo-lugares-para-casal.jpg" alt="Viagens românticas para casais" loading="lazy" />
+        <img src="https://static.ndmais.com.br/2024/06/dia-dos-namorados-mensagens-data-1-1300x975.jpg" alt="Mensagem romântica para o Dia dos Namorados" loading="lazy" />
+        <img src="https://img.freepik.com/fotos-gratis/jovem-casal-romantico-sexy-apaixonado-feliz-na-praia-de-verao-juntos-se-divertindo-usando-maios-mostrando-o-sinal-do-coracao-ao-por-do-sol_285396-6545.jpg?semt=ais_hybrid&w=740" alt="Casal apaixonado na praia" loading="lazy" />
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTfgMoaV43oXEdVNtFDRTcGmgymuzHVSMli3Q&s" alt="Casal romântico" loading="lazy" />
+        <img src="https://images.unsplash.com/photo-1474552226712-ac0f0961a954?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cm9tJUMzJUEybnRpY2F8ZW58MHx8MHx8fDA%3D" alt="Casal romântico em um momento especial" loading="lazy" />
+      </div>
+
+      <h2>Ideias de Presentes</h2>
+      <div class="gift-ideas">
+        <ul>
+          <li>Jantar romântico à luz de velas</li>
+          <li>Buquê de flores frescas</li>
+          <li>Caixa de chocolates premium</li>
+          <li>Cartão personalizado feito à mão</li>
+          <li>Uma playlist de músicas especiais</li>
+          <li>Uma escapada de fim de semana juntos</li>
+          <li>Joias delicadas ou relógio</li>
+          <li>Livro do autor favorito do parceiro(a)</li>
+        </ul>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    (function() {
+      const daysEl = document.getElementById('days');
+      const hoursEl = document.getElementById('hours');
+      const minutesEl = document.getElementById('minutes');
+      const secondsEl = document.getElementById('seconds');
+      const messageEl = document.getElementById('message');
+      const toggleButton = document.getElementById('toggle-ideas');
+      const ideasSection = document.getElementById('ideas-section');
+
+      function getNextValentinesDate() {
+        const now = new Date();
+        let year = now.getFullYear();
+        const valentines = new Date(year, 5, 12, 0, 0, 0); // 12 June (month 5 since 0-indexed)
+        if (now > valentines) {
+          year++;
+          return new Date(year, 5, 12, 0, 0, 0);
+        }
+        return valentines;
+      }
+
+      function updateCountdown() {
+        const now = new Date();
+        const target = getNextValentinesDate();
+        const diff = target - now;
+
+        if (diff <= 0) {
+          daysEl.textContent = '0';
+          hoursEl.textContent = '00';
+          minutesEl.textContent = '00';
+          secondsEl.textContent = '00';
+          messageEl.textContent = 'Feliz Dia dos Namorados! 💖';
+          clearInterval(intervalId);
+          return;
+        }
+
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((diff / (1000 * 60)) % 60);
+        const seconds = Math.floor((diff / 1000) % 60);
+
+        daysEl.textContent = days;
+        hoursEl.textContent = hours.toString().padStart(2, '0');
+        minutesEl.textContent = minutes.toString().padStart(2, '0');
+        secondsEl.textContent = seconds.toString().padStart(2, '0');
+
+        messageEl.textContent = '';
+      }
+
+      toggleButton.addEventListener('click', () => {
+        const isHidden = ideasSection.style.display === 'none' || !ideasSection.style.display;
+        if (isHidden) {
+          ideasSection.style.display = 'block';
+          ideasSection.setAttribute('aria-hidden', 'false');
+          toggleButton.textContent = 'Esconder Ideias para o Dia dos Namorados';
+          ideasSection.scrollIntoView({behavior: 'smooth'});
+        } else {
+          ideasSection.style.display = 'none';
+          ideasSection.setAttribute('aria-hidden', 'true');
+          toggleButton.textContent = 'Mostrar Ideias para o Dia dos Namorados';
+        }
+      });
+
+      updateCountdown();
+      const intervalId = setInterval(updateCountdown, 1000);
+    })();
+  </script>
+</body>
+</html>
